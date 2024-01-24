@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import getpass
 import os
+from dotenv import load_dotenv, find_dotenv
+
+# Load all environment variables from all .env files
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'data_import.apps.DataImportConfig',
     'mychatbot.apps.MychatbotConfig',
-    # 'chatterbot.ext.django_chatterbot',
 ]
 
 MIDDLEWARE = [
@@ -132,21 +135,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CHATTERBOT = {
-#     'name': 'Tech Support Bot',
-#     'logic_adapters': [
-#         'chatterbot.logic.MathematicalEvaluation',
-#         'chatterbot.logic.TimeLogicAdapter',
-#         'chatterbot.logic.BestMatch'
-#     ],
-#     'storage_adapter': 'chatterbot.storage.DjangoStorageAdapter',
-#     'database_uri': 'localhost:5432'
-# }
-
-# os.environ["OPENAI_API_KEY"] = getpass.getpass()
-
-
 STATIC_URL = "static/"
 
-# OPENAI_API_KEY = "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"
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
