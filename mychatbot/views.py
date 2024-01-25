@@ -1,4 +1,5 @@
 import json
+from django.template import loader
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from langchain.sql_database import SQLDatabase
@@ -23,7 +24,6 @@ def mychatbot(request):
     api_key = settings.OPENAI_API_KEY
     db_pass = settings.DATABASES["default"]["PASSWORD"]
     
-    
     db = SQLDatabase.from_uri(
         f"postgresql+psycopg2://postgres:{db_pass}@localhost:5432/postgres",
     )
@@ -38,10 +38,9 @@ def mychatbot(request):
     # question = QUERY.format(question="What is the average value for family income from 2021 to 2023")
     # question = "What is the average value for family income from 2021 to 2023"
     # question = "Do an very detailed analysis for the family income trends from 2000 to 2023"
-    question = "What is the 3 year fixed mortgage rate in June 2022?"
-    # question = "What is your name?"
+    # question = "What is the 3 year fixed mortgage rate in June 2022?"
+    question = "What is your name?"
     # question = "Will a two-year-old like toys?"
-    
     answer = db_chain.invoke(question)
     if answer != 'No, there are no results from the query.':
         llm=OpenAI(temperature=0, api_key=api_key, max_tokens=-1, verbose=True)
@@ -49,3 +48,8 @@ def mychatbot(request):
         return HttpResponse(answer)
     else:    
         return HttpResponse(answer["result"])
+    
+    
+def try_template(request):
+    template = loader.get_template('test_template.html')
+    return HttpResponse(template.render())

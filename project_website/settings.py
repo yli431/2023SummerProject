@@ -59,10 +59,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project_website.urls'
 
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(ROOT, 'mychatbot', 'templates'),
+            os.path.join(ROOT, 'project_website', 'templates'),
+            os.path.join(ROOT, 'data_import', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
