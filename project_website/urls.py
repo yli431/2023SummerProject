@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('data_import/', include("data_import.urls")),
     path('mychatbot/', include("mychatbot.urls")),
+    path('report_page/', include("report_page.urls")),
 ]
