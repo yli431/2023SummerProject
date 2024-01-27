@@ -14,6 +14,7 @@
   {% comment %} <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
   <link type="text/css" rel="stylesheet" href="{% static 'materialize.css' %}">
   <link type="text/css" rel="stylesheet" href="{% static 'style.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'chatbot.css' %}">
   {% comment %} <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
 </head>
 {% endblock header %}
@@ -38,9 +39,9 @@
   {% block content %}{% endblock content %}
 
   {% block float_botton %}
-  <div class="fixed-action-btn">
+{% comment %} <div class="fixed-action-btn">
     <a class="btn-floating btn-large red darken-1">
-      <i class="large material-icons">chat</i>
+    <i class="large material-icons">chat</i>
     </a>
     
     
@@ -50,17 +51,23 @@
         <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
         <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li> 
         <div id="modal1" class="modal">
-           <div class="modal-content" onclick="toggleDialog()">
+        <div class="modal-content" onclick="toggleDialog()">
             <h4>Header</h4>
-            <p>AAAAAA</p>
-          </div>
-          <div class="modal-footer">
+            <div class="row">
+                <form action="/mychatbot/mychatbot/" method="get">
+                    <label for="username">Input your question here:</label>
+                    <input type="text" id="ai_question" name="ai_question" placeholder="Enter your question" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">End Chat</a>
-          </div>
+        </div>
         </div>
     </ul>
     <!-- Modal Structure -->
-  </div>
+</div> {% endcomment %}
   {% endblock float_botton %}
 
   {% block footer %}
@@ -106,21 +113,22 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="{% static 'materialize.js' %}"></script>
   <script src="{% static 'init.js' %}"></script>
-  {% comment %} <script>
+  <script>
     $(document).ready(function(){
         $('.modal').modal();
     });
-  </script> {% endcomment %}
+  </script>
   <script>
       $(document).ready(function(){
         $('.fixed-action-btn').floatingActionButton();
       });
   </script>
-  <script>
+
+  {% comment %} <script>
     function toggleDialog() {
         var chatDialog = document.getElementById('chatDialog');
         chatDialog.style.display = (chatDialog.style.display === 'block') ? 'none' : 'block';
     }
-  </script>
+  </script> {% endcomment %}
   </body>
 </html>

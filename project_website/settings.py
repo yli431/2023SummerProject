@@ -145,3 +145,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = "static/"
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+
+
+from langchain.sql_database import SQLDatabase
+from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain_openai import OpenAI
+from langchain.memory import ConversationBufferMemory
+
+
+DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(
+    llm=OpenAI(temperature=0, api_key=OPENAI_API_KEY, max_tokens=-1, verbose=True), 
+    db=SQLDatabase.from_uri(
+        f"postgresql+psycopg2://postgres:{DATABASES['default']['PASSWORD']}"
+        f"@{DATABASES['default']['HOST']}:{DATABASES['default']['PORT']}/{DATABASES['default']['NAME']}",
+    ),
+    memory=ConversationBufferMemory(return_messages=True)
+)

@@ -1,102 +1,227 @@
 <!DOCTYPE html>
 
-{% extends 'project_website/base_and_chat.html' %}
 {% load static %}
 
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% comment %} <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'> {% endcomment %}
+	{% comment %} <link type="text/css" rel="stylesheet" href="{% static 'mychatbot.min.css' %}"> {% endcomment %}
+  <link type="text/css" rel="stylesheet" href="{% static 'chatbot.css' %}">
+  <link rel="stylesheet" href="style.css">
+	<title>Chatbox</title>
+</head>
+<body>
 
-{% block content %}
+	<div class="chatbox-wrapper">
+		<div class="chatbox-toggle">
+			<i class='bx bx-message-dots'></i>
+		</div>
+		<div class="chatbox-message-wrapper">
+			<div class="chatbox-message-header">
+				<div class="chatbox-message-profile">
+					<img src="{% static 'chatbot.png' %}" alt="" class="chatbox-message-image">
+					<div>
+						<h4 class="chatbox-message-name">Chatbot</h4>
+						<p class="chatbox-message-status">online</p>
+					</div>
+				</div>
+				<div class="chatbox-message-dropdown">
+					<i class='bx bx-dots-vertical-rounded chatbox-message-dropdown-toggle'></i>
+					<ul class="chatbox-message-dropdown-menu">
+						<li>
+							<a href="#">Search</a>
+						</li>
+						<li>
+							<a href="#">Report</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="chatbox-message-content">
+				<h4 class="chatbox-message-no-message">You don't have message yet!</h4>
+				<!-- <div class="chatbox-message-item sent">
+					<span class="chatbox-message-item-text">
+						Lorem, ipsum, dolor sit amet consectetur adipisicing elit. Quod, fugiat?
+					</span>
+					<span class="chatbox-message-item-time">08:30</span>
+				</div>
+				<div class="chatbox-message-item received">
+					<span class="chatbox-message-item-text">
+						Lorem, ipsum, dolor sit amet consectetur adipisicing elit. Quod, fugiat?
+					</span>
+					<span class="chatbox-message-item-time">08:30</span>
+				</div> -->
+			</div>
+			<div class="chatbox-message-bottom">
+				<form action="#" class="chatbox-message-form">
+					<textarea rows="1" placeholder="Type message..." class="chatbox-message-input"></textarea>
+					<button type="submit" class="chatbox-message-submit"><i class='bx bx-send' ></i></button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 
-<div id="index-banner" class="parallax-container">
-  <div class="section no-pad-bot">
-    <div class="container">
-      <br><br>
-      <h1 class="header center teal-text text-lighten-2">House Affordability in Christchurch</h1>
-      {% comment %} <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div> {% endcomment %}
-      <div class="row center">
-        <a href="#" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
-      </div>
-      <br><br>
+	<script src="script.js"></script>
+  <script>
+    // MESSAGE INPUT
+    const textarea = document.querySelector('.chatbox-message-input')
+    const chatboxForm = document.querySelector('.chatbox-message-form')
 
-    </div>
-  </div>
-  <div class="parallax"><img src="{% static 'NB2.png' %}" alt="Unsplashed background img 1"></div>
-</div>
+    textarea.addEventListener('input', function () {
+      let line = textarea.value.split('\n').length
+
+      if(textarea.rows < 6 || line < 6) {
+        textarea.rows = line
+      }
+
+      if(textarea.rows > 1) {
+        chatboxForm.style.alignItems = 'flex-end'
+      } else {
+        chatboxForm.style.alignItems = 'center'
+      }
+    })
+
+    // TOGGLE CHATBOX
+    const chatboxToggle = document.querySelector('.chatbox-toggle')
+    const chatboxMessage = document.querySelector('.chatbox-message-wrapper')
+
+    chatboxToggle.addEventListener('click', function () {
+      chatboxMessage.classList.toggle('show')
+    })
 
 
-<div class="container">
-  <div class="section">
 
-    <!--   Icon Section 1  -->
-    <div class="row">
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <a href="http://localhost:8000/report_page/report/">
-            <h2 class="center brown-text"><i class="material-icons">filter_1</i></h2>
-            <h5 class="center">Report</h5>
-          </a>
-          <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+    // DROPDOWN TOGGLE
+    const dropdownToggle = document.querySelector('.chatbox-message-dropdown-toggle')
+    const dropdownMenu = document.querySelector('.chatbox-message-dropdown-menu')
+
+    dropdownToggle.addEventListener('click', function () {
+      dropdownMenu.classList.toggle('show')
+    })
+
+    document.addEventListener('click', function (e) {
+      if(!e.target.matches('.chatbox-message-dropdown, .chatbox-message-dropdown *')) {
+        dropdownMenu.classList.remove('show')
+      }
+    })
+
+
+
+
+
+
+
+    // CHATBOX MESSAGE
+    const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
+    const chatboxNoMessage = document.querySelector('.chatbox-message-no-message')
+
+    chatboxForm.addEventListener('submit', function (e) {
+      e.preventDefault()
+
+      if(isValid(textarea.value)) {
+        writeMessage()
+        //console.log(answer);
+        //autoReply(answer)
+        //setTimeout(autoReply, 1000)
+      }
+    })
+
+
+
+    function addZero(num) {
+      return num < 10 ? '0'+num : num
+    }
+
+    function writeMessage() {
+      const today = new Date()
+      let message = `
+        <div class="chatbox-message-item sent">
+          <span class="chatbox-message-item-text">
+            ${textarea.value.trim().replace(/\n/g, '<br>\n')}
+          </span>
+          <span class="chatbox-message-item-time">${addZero(today.getHours())}:${addZero(today.getMinutes())}</span>
         </div>
-      </div>
+      `
 
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text"><i class="material-icons">filter_2</i></h2>
-          <h5 class="center">Chatbot</h5>
+      const textarea_value_backup = textarea.value.trim().replace(/\n/g, '<br>\n')
+      chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
+      textarea.value = ''
+      textarea.focus()
+      chatboxForm.style.alignItems = 'center'
+      textarea.rows = 1
+      chatboxNoMessage.style.display = 'none'
+      scrollBottom()
 
-          <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+      const internalUrl = '/mychatbot/mychatbot/';
+
+      //const params = {
+      //  ai_question: textarea_value_backup
+      //};
+      
+      // Convert the parameters to a query string
+      //const queryString = Object.keys(params)
+      //    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+      //    .join('&');
+      
+      // Combine the base URL with the query string
+      const url = `${internalUrl}?ai_question=${textarea_value_backup}`;
+
+      console.log(url);
+
+      fetch(url, {
+          method: 'GET',
+          headers: {
+              // You may include headers if necessary
+          },
+      }).then(response => {
+          // Check if the response was successful
+          //if (!response.ok) {
+              //throw new Error('Network response was not ok');
+          //}
+
+          // Parse the response as JSON
+          console.log("111111111111111");
+          console.log(response);
+
+          response.json().then(data => {
+            autoReply(data.ai_answer)
+            console.log('Resolved data:', data.ai_response);
+          })
+          //console.log(response.json());
+          //console.log(response.)
+          //console.log(response.json());
+          //console.log(response.json()[0])
+      });
+
+    }
+
+    function autoReply(response_message) {
+      const today = new Date()
+      let message = `
+        <div class="chatbox-message-item received">
+          <span class="chatbox-message-item-text">
+            ${response_message}
+          </span>
+          <span class="chatbox-message-item-time">${addZero(today.getHours())}:${addZero(today.getMinutes())}</span>
         </div>
-      </div>
+      `
+      chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
+      scrollBottom()
+    }
 
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text"><i class="material-icons">filter_3</i></h2>
-          <h5 class="center">Raw Data</h5>
+    function scrollBottom() {
+      chatboxMessageWrapper.scrollTo(0, chatboxMessageWrapper.scrollHeight)
+    }
 
-          <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    function isValid(value) {
+      let text = value.replace(/\n/g, '')
+      text = text.replace(/\s/g, '')
 
-
-<div class="parallax-container valign-wrapper">
-  <div class="section no-pad-bot">
-    <div class="container">
-      <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div>
-    </div>
-  </div>
-  <div class="parallax"><img src="{% static 'RM.png' %}" alt="Unsplashed background img 2"></div>
-</div>
-
-<div class="container">
-  <div class="section">
-
-    <div class="row">
-      <div class="col s12 center">
-        <h3><i class="mdi-content-send brown-text"></i></h3>
-        <h4>Contact Us</h4>
-        <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<div class="parallax-container valign-wrapper">
-  <div class="section no-pad-bot">
-    <div class="container">
-      <div class="row center">
-        <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-      </div>
-    </div>
-  </div>
-  <div class="parallax"><img src="{% static 'TR.png' %}" alt="Unsplashed background img 3"></div>
-</div>
-
-{% endblock content%}
+      return text.length > 0
+    }
+  </script>
+</body>
+</html>
