@@ -68,6 +68,7 @@ TEMPLATES = [
             os.path.join(ROOT, 'mychatbot', 'templates'),
             os.path.join(ROOT, 'project_website', 'templates'),
             os.path.join(ROOT, 'data_import', 'templates'),
+            os.path.join(ROOT, 'report_page', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

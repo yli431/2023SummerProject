@@ -36,18 +36,14 @@ def mychatbot(request):
     )
     
     # question = QUERY.format(question="What is the average value for family income from 2021 to 2023")
-    # question = "What is the average value for family income from 2021 to 2023"
+    question = "What is the average value for family income from 2021 to 2023"
     # question = "Do an very detailed analysis for the family income trends from 2000 to 2023"
     # question = "What is the 3 year fixed mortgage rate in June 2022?"
-    question = "What is your name?"
+    # question = "abc"
     # question = "Will a two-year-old like toys?"
-    answer = db_chain.invoke(question)
-    if answer != 'No, there are no results from the query.':
-        llm=OpenAI(temperature=0, api_key=api_key, max_tokens=-1, verbose=True)
-        answer = llm.invoke(question)
-        return HttpResponse(answer)
-    else:    
-        return HttpResponse(answer["result"])
+    answer = db_chain.invoke(input=question, return_only_outputs=False)
+    
+    return HttpResponse(answer["result"])
     
     
 def try_template(request):
