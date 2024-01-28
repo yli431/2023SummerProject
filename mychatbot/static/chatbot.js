@@ -1,3 +1,39 @@
+const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
+
+
+const checkHistoryUrl = '/mychatbot/chat_history/';
+fetch(checkHistoryUrl, {
+      method: 'GET',
+      headers: {
+      },
+  }).then(response => {
+      response.json().then(data => {
+        renderHistory(data.history);
+      })
+  });
+
+  function renderHistory(history) {
+    for (let i=0; i < history.length; i++) {
+      if (i % 2 === 0) {
+        let question_text = `
+        <div class="chatbox-message-item sent">
+          <span class="chatbox-message-item-text">
+            ${history[i]}
+          </span>
+        </div>`
+        chatboxMessageWrapper.insertAdjacentHTML('beforeend', question_text);
+      } else {
+        let answer_text = `
+        <div class="chatbox-message-item received">
+          <span class="chatbox-message-item-text">
+            ${history[i]}
+          </span>
+        </div>`
+        chatboxMessageWrapper.insertAdjacentHTML('beforeend', answer_text);
+      }
+    }
+  }
+
 
 // MESSAGE INPUT
   const textarea = document.querySelector('.chatbox-message-input')
@@ -19,27 +55,18 @@
 
   // TOGGLE CHATBOX
   const chatboxToggle = document.querySelector('.chatbox-toggle')
-  const modalToggle = document.querySelector('.chatbot-close')
+  const chatboxClose = document.querySelector('.chatbot-close')
   const chatboxMessage = document.querySelector('.chatbox-message-wrapper')
 
   chatboxToggle.addEventListener('click', function () {
     chatboxMessage.classList.toggle('show')
   })
-  modalToggle.addEventListener('click', function () {
+  chatboxClose.addEventListener('click', function () {
     chatboxMessage.classList.toggle('show')
   })
 
-//   const modalToggle = document.querySelector('.chatbot-close')
-//   const chatboxMessageT = document.querySelector('.chatbox-message-wrapper')
-
-//   modalToggle.addEventListener('click', function () {
-//     chatboxMessageT.classList.toggle('show')
-//   })
-
-
-
   // CHATBOX MESSAGE
-  const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
+  // const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
   const chatboxNoMessage = document.querySelector('.chatbox-message-no-message')
 
   chatboxForm.addEventListener('submit', function (e) {
@@ -79,19 +106,13 @@
     const internalUrl = '/mychatbot/mychatbot/';
     const url = `${internalUrl}?ai_question=${textarea_value_backup}`;
 
-    console.log(url);
-
     fetch(url, {
         method: 'GET',
         headers: {
         },
     }).then(response => {
-        console.log("111111111111111");
-        console.log(response);
-
         response.json().then(data => {
-          autoReply(data.ai_response)
-          console.log('Resolved data:', data.ai_response);
+          autoReply(data.ai_response);
         })
     });
 
