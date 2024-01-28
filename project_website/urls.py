@@ -26,5 +26,5 @@ urlpatterns = [
     path('data_import/', include("data_import.urls")),
     path('mychatbot/', include("mychatbot.urls")),
     path('report_page/', include("report_page.urls")),
-    path('summary', views.summary),
+    path('summary/', views.summary),
 ]
