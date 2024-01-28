@@ -11,9 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import getpass
 import os
 from dotenv import load_dotenv, find_dotenv
+from langchain.sql_database import SQLDatabase
+from langchain_experimental.sql.base import SQLDatabaseChain
+from langchain_openai import OpenAI
+from langchain.memory import ConversationBufferMemory
 
 # Load all environment variables from all .env files
 load_dotenv(find_dotenv())
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'data_import.apps.DataImportConfig',
     'mychatbot.apps.MychatbotConfig',
+    'report_page.apps.ReportPageConfig',
 ]
 
 MIDDLEWARE = [
@@ -141,17 +145,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-STATIC_URL = "static/"
-
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
-
-
-from langchain.sql_database import SQLDatabase
-from langchain_experimental.sql.base import SQLDatabaseChain
-from langchain_openai import OpenAI
-from langchain.memory import ConversationBufferMemory
-
 
 DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(
     llm=OpenAI(temperature=0, api_key=OPENAI_API_KEY, max_tokens=-1, verbose=True), 

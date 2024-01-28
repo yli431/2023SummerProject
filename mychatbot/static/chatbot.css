@@ -81,6 +81,7 @@ select {
 
 /* GLOBAL STYLES */
 :root {
+	--teal: #4db6ac;
 	--blue: #335DFF;
 	--grey: #F5F5F5;
 	--grey-d-1: #EEE;
@@ -222,7 +223,7 @@ select {
 }
 .chatbox-message-item.sent {
 	align-self: flex-end;
-	background: var(--blue);
+	background: var(--teal);
 	color: var(--white);
 	border-radius: .75rem 0 .75rem .75rem;
 }

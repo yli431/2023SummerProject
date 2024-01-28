@@ -101,12 +101,3 @@ def import_mortgage_rate(request):
                 )
                 num_of_data += 1
     return HttpResponse(f'{num_of_data} lines of mortgage rate data imported successfully.')
-
-
-def try_frontend(request):
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render())
-
-def click_and_process(request):
-    template = loader.get_template('clickAP.html')
-    return HttpResponse(template.render())

@@ -11,13 +11,12 @@
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  {% comment %} <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
   <link type="text/css" rel="stylesheet" href="{% static 'materialize.css' %}">
   <link type="text/css" rel="stylesheet" href="{% static 'style.css' %}">
   <link type="text/css" rel="stylesheet" href="{% static 'chatbot.css' %}">
-  {% comment %} <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
 </head>
 {% endblock header %}
+
 <body>
 
   {% block navigation_bar %}
@@ -39,35 +38,39 @@
   {% block content %}{% endblock content %}
 
   {% block float_botton %}
-{% comment %} <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red darken-1">
-    <i class="large material-icons">chat</i>
-    </a>
-    
-    
-    <ul>
-        <li><a class="btn-floating red modal-trigger" href="#modal1" id="chatDialog"><i class="material-icons">chat</i></a></li> 
-        <li><a class="btn-floating yellow darken-1"><i class="material-icons">insert_chart</i></a></li>
-        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-        <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li> 
-        <div id="modal1" class="modal">
-        <div class="modal-content" onclick="toggleDialog()">
-            <h4>Header</h4>
-            <div class="row">
-                <form action="/mychatbot/mychatbot/" method="get">
-                    <label for="username">Input your question here:</label>
-                    <input type="text" id="ai_question" name="ai_question" placeholder="Enter your question" required>
-                    <button type="submit">Submit</button>
-                </form>
+  <div class="chatbox-wrapper">
+    <div class="chatbox-toggle teal">
+        <i class="material-icons">chat</i>
+    </div>
+
+    <div class="chatbox-message-wrapper">
+        <div class="chatbox-message-header">
+            <div class="chatbox-message-profile">
+                <img src="{% static 'chatbot.png' %}" alt="" class="chatbox-message-image">
+                <div>
+                    <h4 class="chatbox-message-name">Chatbot</h4>
+                    <p class="chatbox-message-status">online</p>
+                </div>
+            </div>
+            <div class="chatbot-close">
+                <i class="material-icons">close</i>
             </div>
         </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">End Chat</a>
+
+        <div class="chatbox-message-content">
+            <h4 class="chatbox-message-no-message">You don't have message yet!</h4>
         </div>
+        <div class="chatbox-message-bottom">
+            <form action="#" class="chatbox-message-form">
+                <textarea rows="1" placeholder="Type message..." class="chatbox-message-input"></textarea>
+                <button class="waves-effect waves-light btn-small" type="submit" name="action">
+                    <i class="material-icons">send</i>
+                </button>
+            </form>
         </div>
-    </ul>
-    <!-- Modal Structure -->
-</div> {% endcomment %}
+      </div>
+    </div>
+
   {% endblock float_botton %}
 
   {% block footer %}
@@ -113,22 +116,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="{% static 'materialize.js' %}"></script>
   <script src="{% static 'init.js' %}"></script>
-  <script>
-    $(document).ready(function(){
-        $('.modal').modal();
-    });
-  </script>
-  <script>
-      $(document).ready(function(){
-        $('.fixed-action-btn').floatingActionButton();
-      });
-  </script>
+  <script src="{% static 'chatbot.js' %}"></script>
 
-  {% comment %} <script>
-    function toggleDialog() {
-        var chatDialog = document.getElementById('chatDialog');
-        chatDialog.style.display = (chatDialog.style.display === 'block') ? 'none' : 'block';
-    }
-  </script> {% endcomment %}
-  </body>
+</body>
 </html>
