@@ -27,4 +27,5 @@ urlpatterns = [
     path('mychatbot/', include("mychatbot.urls")),
     path('report_page/', include("report_page.urls")),
     path('summary/', views.summary),
+    path('dashboard/', include("dashboard.urls")),
 ]

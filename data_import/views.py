@@ -9,7 +9,8 @@ def import_house_price_data(request):
     csv_file_path = 'D:\\workspace\\2023SummerProject\\data\\NZ_HousePriceIndex_27NOV2023.csv'
     
     with open(csv_file_path, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
+        # csv_reader = csv.DictReader(csv_file)
+        csv_reader = csv.reader(csv_file)
         num_of_data = 0
         if House.objects.all().exists():
             print("Data already exist.")
@@ -21,8 +22,8 @@ def import_house_price_data(request):
                     twelve_month_change = row["12 month change%"].replace("%", ""),
                     three_month_change = row["3 month change %"].replace("%", ""),
                 )
-                num_of_data += 1
-            
+                num_of_data += 1            
+    # return HttpResponse(f'{num_of_data} lines of House price Nov 2023 data imported successfully.')
     return HttpResponse(f'{num_of_data} lines of House price Nov 2023 data imported successfully.')
 
 
