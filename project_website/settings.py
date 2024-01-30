@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'data_import.apps.DataImportConfig',
     'mychatbot.apps.MychatbotConfig',
     'report_page.apps.ReportPageConfig',
+    'dashboard.apps.DashboardConfig',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,7 @@ TEMPLATES = [
             os.path.join(ROOT, 'project_website', 'templates'),
             os.path.join(ROOT, 'data_import', 'templates'),
             os.path.join(ROOT, 'report_page', 'templates'),
+            os.path.join(ROOT, 'dashboard', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -155,3 +157,13 @@ DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(
     ),
     memory=ConversationBufferMemory(return_messages=True)
 )
+
+
+# Dashboard Settings
+# IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# IMPORT_EXPORT_SKIP_ADMIN_LOG = True
+
+# IMPORT_EXPORT_TMP_STORAGE_CLASS = import_export.tmp_storages.TempFolderStorage
+
+# IMPORT_EXPORT_IMPORT_PERMISSION_CODE = None

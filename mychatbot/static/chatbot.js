@@ -30,6 +30,7 @@ fetch(checkHistoryUrl, {
           </span>
         </div>`
         chatboxMessageWrapper.insertAdjacentHTML('beforeend', answer_text);
+        scrollBottom()
       }
     }
   }
