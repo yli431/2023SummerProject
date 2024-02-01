@@ -56,3 +56,20 @@ footer.page-footer {
   margin: 0;
 }
 
+
+.text-shadow-4 {
+  text-shadow: 4px 4px 8px rgba(73, 72, 72, 0.6);
+}
+
+#index-banner {
+  position: relative;
+  height: 500px; /* Adjust this height based on your image size */
+}
+
+.header.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
