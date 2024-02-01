@@ -22,15 +22,17 @@
   {% block navigation_bar %}
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">2023 Summer Project</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Quick Links</a></li>
-      </ul>
-
-      <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <a id="logo-container" href="#" class="brand-logo"><i class="large material-icons">home</i>2023 Summer Project</a>
+        <ul class="right hide-on-med-and-down">
+          <ul id="dropdown2" class="dropdown-content">
+            <li><a href="http://localhost:8000/summary/"><i class="material-icons left">home</i>home</a></li>
+            <li><a href="http://localhost:8000/report_page/report/"><i class="material-icons left">assignment</i>report</a></li>
+            <li><a href="http://127.0.0.1:8000/dashboard/dashboard/#"><i class="material-icons left">insert_chart</i>dashboard</a></li>
+          </ul>
+            <a class="btn dropdown-trigger teal lighten-2" href="#!" data-target="dropdown2"><i class="material-icons left">menu</i>Quick links
+              <i class="material-icons right">arrow_drop_down</i>
+            </a>      
+        </ul>
     </div>
   </nav>
   {% endblock navigation_bar %}
@@ -39,8 +41,8 @@
 
   {% block float_botton %}
   <div class="chatbox-wrapper">
-    <div class="chatbox-toggle teal">
-        <i class="material-icons">chat</i>
+    <div class="chatbox-toggle teal darken-2">
+      <a class="btn-floating btn-large pulse teal darken-2"><i class="material-icons">chat</i></a>
     </div>
 
     <div class="chatbox-message-wrapper">
@@ -92,7 +94,7 @@
             <li><a class="white-text" href="#!">Link 4</a></li>
           </ul>
         </div>
-        <div class="col l3 s12">
+        {% comment %} <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
             <li><a class="white-text" href="#!">Link 1</a></li>
@@ -100,7 +102,7 @@
             <li><a class="white-text" href="#!">Link 3</a></li>
             <li><a class="white-text" href="#!">Link 4</a></li>
           </ul>
-        </div>
+        </div> {% endcomment %}
       </div>
     </div>
     <div class="footer-copyright">
@@ -117,6 +119,7 @@
   <script src="{% static 'materialize.js' %}"></script>
   <script src="{% static 'init.js' %}"></script>
   <script src="{% static 'chatbot.js' %}"></script>
+  <script src="{% static 'dropdownlist.js' %}"></script>
 
 </body>
 </html>

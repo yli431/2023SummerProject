@@ -149,21 +149,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
+from sqlalchemy import create_engine
+
+TABLES_TO_INCLUDE = [
+    "data_import_averagehousevaluechch",
+    "data_import_averagehousevaluenz",
+    "data_import_averagerentalgrowth",
+    "data_import_familyincome", 
+    "data_import_house",
+    "data_import_housevaluegrowth",
+    "data_import_mortgagerates",
+]
+
 DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(
     llm=OpenAI(temperature=0, api_key=OPENAI_API_KEY, max_tokens=-1, verbose=True), 
-    db=SQLDatabase.from_uri(
-        f"postgresql+psycopg2://postgres:{DATABASES['default']['PASSWORD']}"
-        f"@{DATABASES['default']['HOST']}:{DATABASES['default']['PORT']}/{DATABASES['default']['NAME']}",
+    db=SQLDatabase(
+        engine=create_engine(
+            f"postgresql+psycopg2://postgres:{DATABASES['default']['PASSWORD']}"
+            f"@{DATABASES['default']['HOST']}:{DATABASES['default']['PORT']}/{DATABASES['default']['NAME']}"
+        ),
+        include_tables=TABLES_TO_INCLUDE,
     ),
-    memory=ConversationBufferMemory(return_messages=True)
+    memory=ConversationBufferMemory(return_messages=True),
 )
-
-
-# Dashboard Settings
-# IMPORT_EXPORT_USE_TRANSACTIONS = True
-
-# IMPORT_EXPORT_SKIP_ADMIN_LOG = True
-
-# IMPORT_EXPORT_TMP_STORAGE_CLASS = import_export.tmp_storages.TempFolderStorage
-
-# IMPORT_EXPORT_IMPORT_PERMISSION_CODE = None

@@ -11,7 +11,6 @@ fetch(checkHistoryUrl, {
         renderHistory(data.history);
       })
   });
-
   function renderHistory(history) {
     for (let i=0; i < history.length; i++) {
       if (i % 2 === 0) {
@@ -67,7 +66,6 @@ fetch(checkHistoryUrl, {
   })
 
   // CHATBOX MESSAGE
-  // const chatboxMessageWrapper = document.querySelector('.chatbox-message-content')
   const chatboxNoMessage = document.querySelector('.chatbox-message-no-message')
 
   chatboxForm.addEventListener('submit', function (e) {

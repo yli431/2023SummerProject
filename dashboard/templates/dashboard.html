@@ -3,35 +3,131 @@
 {% extends 'project_website/base_and_chat.html' %}
 {% load static %}
 
-{% block content%}
-<div class="row">
-    <div class="col s12 m4">
-      <div class="icon-block">
-        <a href="http://localhost:8000/report_page/report/">
-          <h2 class="center brown-text"><i class="material-icons">filter_1</i></h2>
-          <h5 class="center">Import Data</h5>
-        </a>
-        <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-      </div>
-    </div>
 
-    <div class="col s12 m4">
-      <div class="icon-block">
-        <h2 class="center brown-text"><i class="material-icons">filter_2</i></h2>
-        <h5 class="center">Export Data</h5>
+{% block content %}
 
-        <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-      </div>
-    </div>
+  <div class="container">
+    <div class="section">
 
-    <div class="col s12 m4">
-      <div class="icon-block">
-        <h2 class="center brown-text"><i class="material-icons">filter_3</i></h2>
-        <h5 class="center">Delete Data</h5>
+      <!--   Icon Section 1  -->
+      <div class="row">
+        <div class="col m6">
+          <div class="icon-block">
+            {% comment %} <a href="http://localhost:8000//dashboard/dashboard/"> {% endcomment %}
+              <h2 class="center brown-text"><i class="material-icons">filter_1</i></h2>
+              <h5 class="center">Mortgage Rate</h5>
+                <div class="chart">
+                  <canvas id="mortgage_rate" class="chart-canvas" height="170"></canvas>
+                </div>
+            </a>
+          </div>
+        </div>
 
-        <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+        <div class="col m6">
+          <div class="icon-block">
+            {% comment %} <a href="http://localhost:8000//dashboard/family-income-full-chart/"> {% endcomment %}
+            <h2 class="center brown-text"><i class="material-icons">filter_2</i></h2>
+            <h5 class="center">Family Income</h5>
+              <div class="chart">
+                <canvas id="family_income" class="chart-canvas" height="170"></canvas>
+              </div>
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-{% endblock content%}
+  <div class="container">
+    <div class="section">
+      
+      <!--   Icon Section 2  -->
+      <div class="row">
+        <div class="col m6">
+          <div class="icon-block">
+            {% comment %} <a href="http://localhost:8000/report_page/report/"> {% endcomment %}
+              <h2 class="center brown-text"><i class="material-icons">filter_3</i></h2>
+              <h5 class="center">House Value Growth</h5>
+              <div class="chart">
+                <canvas id="house_value_growth" class="chart-canvas" height="170"></canvas>
+              </div>
+            </a>
+            {% comment %} <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p> {% endcomment %}
+          </div>
+        </div>
+        
+        <div class="col m6">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">filter_4</i></h2>
+            <h5 class="center">Rental Growth</h5>
+              <div class="chart">
+                <canvas id="rental_growth" class="chart-canvas" height="170"></canvas>
+              </div>
+            {% comment %} <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      
+      <!--   Icon Section 3  -->
+      <div class="row">
+        <div class="col s12">
+          <div class="icon-block">
+            {% comment %} <a href="http://localhost:8000/report_page/report/"> {% endcomment %}
+              <h2 class="center brown-text"><i class="material-icons">filter_5</i></h2>
+              <h5 class="center">NZ House Value (by region/district)</h5>
+              <div class="chart">
+                <canvas id="house_value_nz" class="chart-canvas" height="300"></canvas>
+              </div>
+            </a>
+            {% comment %} <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p> {% endcomment %}
+          </div>
+        </div>
+        
+        <div class="col l12">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">filter_6</i></h2>
+            <h5 class="center">House Value Change</h5>
+              <div class="chart">
+                <canvas id="house_value_and_change" class="chart-canvas" height="300"></canvas>
+              </div>
+            {% comment %} <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    {% comment %} <div style="width: 800px;"><canvas id="mortgage_rate"></canvas></div> {% endcomment %}
+    {% comment %} <div style="width: 800px;"><canvas id="family_income"></canvas></div>
+    <div style="width: 800px;"><canvas id="rental_growth"></canvas></div> {% endcomment %}
+    {% comment %} <div style="width: 800px;"><canvas id="house_value_growth"></canvas></div>
+    <div style="width: 800px;"><canvas id="house_value_nz"></canvas></div>
+    <div style="width: 800px;"><canvas id="house_value_and_change"></canvas></div> {% endcomment %}
+
+
+    <!-- <script type="module" src="dimensions.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="{% static 'mortgagerate.js' %}"></script>
+    <script type="module" src="{% static 'familyincome.js' %}"></script>
+    <script type="module" src="{% static 'rentalgrowth.js' %}"></script>
+    <script type="module" src="{% static 'housevaluegrowth.js' %}"></script>
+    <script type="module" src="{% static 'housevaluenz.js' %}"></script>
+    <script type="module" src="{% static 'housevalueandchange.js' %}"></script>
+
+
+
+    {% comment %} <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/chartjs.min.js"></script> {% endcomment %}
+  
+
+{% endblock content %}
