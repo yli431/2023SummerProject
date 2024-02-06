@@ -129,6 +129,12 @@ fetch(dataUrl, {
 
 function generateYearMonthPairs(startYear, startMonth, endYear, endMonth) {
     let yearMonthPairs = [];
+
+    // for (let year = 2000; year <= 2023; year++) {
+    //     for (let month = 1; month <= 12; month++) {
+    //         yearMonthPairs.push(month.toString() + "/" + year.toString());
+    //     }
+    // }
     let currentDate = new Date(startYear, startMonth - 1); // Month is zero-based
 
     while (currentDate <= new Date(endYear, endMonth - 1)) {
