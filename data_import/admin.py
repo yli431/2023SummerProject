@@ -205,5 +205,7 @@ class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
                 month=row["month"],
                 year=row["year"],
                 price=row["price"],
-            )           
+            )    
+       
     list_display = ("suburb", "month", "year", "price")
+    list_filter = ["suburb"]

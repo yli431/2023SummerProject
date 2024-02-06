@@ -6,14 +6,11 @@ fetch(dataUrl, {
     },
 }).then(response => {
     response.json().then(data => {
-
-        // const numberOfColors = 90;
         let suburbNames = Object.keys(data.house_value_of_chchsuburbs_dict);
         const ctx = document.getElementById('house_value_of_chchsuburbs');
-        const generatedColors = generateRGBColors(suburbNames.length);
-
-        // let single_suburb = data.house_value_of_chchsuburbs_dict["Addington"]
-        // console.log(single_suburb);
+        const displayAllButton = document.getElementById('display_all_lines');
+        const hideAllButton = document.getElementById('hide_all_lines');
+        const displayDefaultButton = document.getElementById('display_default_lines');
 
         let myDataSet = [];
 
@@ -29,86 +26,103 @@ fetch(dataUrl, {
                 label: suburbNames[i],
                 data: singleSuburbPrices,
                 fill: false,
-                // borderColor: generatedColors[i],
                 tension: 0.1,
-                pointRadius: 1.5
-                // pointHoverRadius: 0
+                pointRadius: 1.5,
+                hidden: true
             });
         }
-
-        // console.log(single_suburb_prices);
 
         const startYear = 2000;
         const startMonth = 1; // January
         const endYear = 2024;
         const endMonth = 1; // January
-
         const yearMonthPairs = generateYearMonthPairs(startYear, startMonth, endYear, endMonth);
-        console.log(yearMonthPairs);
 
-        new Chart(ctx, {
+        const chartAreaBorder = {
+            id: 'chartAreaBorder',
+            beforeDraw(chart, args, options) {
+              const {ctx, chartArea: {left, top, width, height}} = chart;
+              ctx.save();
+              ctx.strokeStyle = options.borderColor;
+              ctx.lineWidth = options.borderWidth;
+              ctx.setLineDash(options.borderDash || []);
+              ctx.lineDashOffset = options.borderDashOffset;
+              ctx.strokeRect(left, top, width, height);
+              ctx.restore();
+            }
+          };
+
+        let line_chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: yearMonthPairs,
                 datasets: myDataSet
-                // datasets: [{
-                //     label: 'Addington',
-                //     data: single_suburb_prices,
-                //     fill: false,
-                //     borderColor: 'rgb(75, 192, 192)',
-                //     tension: 0.1
-                // }]
             },
-            
-            // options: {
-            //     animations: {
-            //       radius: {
-            //         duration: 400,
-            //         easing: 'linear',
-            //         loop: (context) => context.active
-            //       }
-            //     },
-            //     hoverRadius: 12,
-            //     hoverBackgroundColor: 'yellow',
-            //     interaction: {
-            //       mode: 'nearest',
-            //       intersect: false,
-            //       axis: 'x'
-            //     },
-            //     plugins: {
-            //       tooltip: {
-            //         enabled: false
-            //       }
-            //     }
-            //   },
+            options: {
+                plugins: {
+                  chartAreaBorder: {
+                    borderColor: 'grey',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    borderDashOffset: 2,
+                  }
+                }
+            },
+            plugins: [chartAreaBorder]
         });
-        
 
-    //   for (var key of keys) {
-    //     let suburb_house_price = data.house_value_of_chchsuburbs_dict[key]
-    //     // console.log(suburb_house_price)
-    //     const formattedDates = suburb_house_price.map(entry => `${entry.month}/${entry.year}`)
-    //     // console.log("1111111111111")
-    //     console.log(formattedDates)
-    //     new Chart(ctx, {
-    //         type: 'line',
-    //         data: {
-    //             labels: formattedDates,
-    //             datasets: [
-    //                 {
-    //                     label: 'price',
-    //                     data: data.house_value_of_chchsuburbs_dict[key].map(row => row.price),
-    //                     borderWidth: 1
-    //                 },
-    //             ]},
-    //             options: {
-    //                 scales: {
-    //                     y: {
-    //                         beginAtZero: true
-    //                     }
-    //             }}
-    //         });
-    //     }
+        let init_display_suburbs = [
+            'Papanui', 
+            'Christchurch Central', 
+            'Ilam', 
+            'Cashmere', 
+            'New Brighton',
+            'Kennedys Bush',
+            'Phillipstown'
+        ]
+
+        line_chart.data.datasets.forEach(function(e) {
+            if (init_display_suburbs.includes(e.label)) {
+                e.hidden = false;
+            }
+        });
+
+        line_chart.update();
+
+        displayAllButton.addEventListener('click', function (e) {
+            e.preventDefault()
+        
+            line_chart.data.datasets.forEach(function(e) {
+                e.hidden = false;
+            });
+    
+            line_chart.update();
+        })
+
+        hideAllButton.addEventListener('click', function (e) {
+            e.preventDefault()
+        
+            line_chart.data.datasets.forEach(function(e) {
+                e.hidden = true;
+            });
+    
+            line_chart.update();
+        })
+
+        displayDefaultButton.addEventListener('click', function (e) {
+            e.preventDefault()
+        
+            line_chart.data.datasets.forEach(function(e) {
+                if (init_display_suburbs.includes(e.label)) {
+                    e.hidden = false;
+                }
+                else {
+                    e.hidden = true;
+                }
+            });
+    
+            line_chart.update();
+        })
       })
   });
 
@@ -119,28 +133,12 @@ function generateYearMonthPairs(startYear, startMonth, endYear, endMonth) {
 
     while (currentDate <= new Date(endYear, endMonth - 1)) {
         const year = currentDate.getFullYear();
-        const month = currentDate.toLocaleString('default', { month: 'long' });
-        yearMonthPairs.push(year.toString() + "." + month);
+        // const month = currentDate.toLocaleString('default', { month: 'long' });
+        const month = currentDate.getMonth();
+        // yearMonthPairs.push(year.toString() + "." + month);
+        yearMonthPairs.push((month + 1).toString() + "/" + year.toString());
         currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
     return yearMonthPairs;
 }
-
-function generateRGBColors(numColors) {
-    const colors = [];
-
-    for (let i = 0; i < numColors; i++) {
-    //   const red = Math.floor((i * 255) / (numColors - 1));
-    //   const green = Math.floor((i * 255) / (numColors - 1));
-    //   const blue = Math.floor((i * 255) / (numColors - 1));
-        const red = 255 - i + 10;
-        const green = 255 - i +5;
-        const blue = i + 30;
-
-        const color = `rgb(${red}, ${green}, ${blue})`;
-        colors.push(color);
-    }
-
-    return colors;
-  }

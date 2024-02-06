@@ -19,17 +19,20 @@ fetch(dataUrl, {
             {
               label: '3-year-rates',
               data: data.mortgage_rates.map(row => row.three_year_rate),
-              borderWidth: 1
+              borderWidth: 1,
+              pointRadius: false
             },
             {
               label: '4-year-rates',
               data: data.mortgage_rates.map(row => row.four_year_rate),
-              borderWidth: 1
+              borderWidth: 1,
+              pointRadius: false
             },
             {
               label: '5-year-rates',
               data: data.mortgage_rates.map(row => row.five_year_rate),
-              borderWidth: 1
+              borderWidth: 1,
+              pointRadius: false
             }
           ]
         },
