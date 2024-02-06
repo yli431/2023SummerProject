@@ -18,12 +18,9 @@ from django.contrib import admin
 from django.urls import include, path
 from project_website import views
 
-# from project_website import read_files
-from data_import import urls as read_files_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('data_import/', include("data_import.urls")),
     path('mychatbot/', include("mychatbot.urls")),
     path('report_page/', include("report_page.urls")),
     path('summary/', views.summary),

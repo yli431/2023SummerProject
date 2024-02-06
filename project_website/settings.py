@@ -17,6 +17,7 @@ from langchain.sql_database import SQLDatabase
 from langchain_experimental.sql.base import SQLDatabaseChain
 from langchain_openai import OpenAI
 from langchain.memory import ConversationBufferMemory
+from sqlalchemy import create_engine
 
 # Load all environment variables from all .env files
 load_dotenv(find_dotenv())
@@ -148,8 +149,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
-
-from sqlalchemy import create_engine
 
 TABLES_TO_INCLUDE = [
     "data_import_averagehousevaluechch",

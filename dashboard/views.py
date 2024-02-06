@@ -25,8 +25,8 @@ def get_data_for_mortgage_rates(request) -> JsonResponse:
 
 def get_data_for_family_income(request) -> JsonResponse:
     family_income_items = FamilyIncome.objects.all()
-    # print(family_income_items)
     family_income = []
+
     for family_income_item in family_income_items:
         family_income.append(
             {
@@ -112,7 +112,7 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
 def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
-    suburb_items = MeanHouseValueSuburbsCHCH.objects.all()
+    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "year", "month")
     house_value_of_chchsuburbs_dict = {}
     
     for suburb_item in suburb_items:
