@@ -1,7 +1,5 @@
-// import Chart from './chart.js/auto'
 
 const dataUrl = '/dashboard/fetch-family-income-data/';
-// const url = `${internalUrl}?ai_question=${textarea_value_backup}`;
 
 fetch(dataUrl, {
     method: 'GET',

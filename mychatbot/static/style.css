@@ -73,3 +73,19 @@ footer.page-footer {
   transform: translate(-50%, -50%);
   margin: 0;
 }
+
+
+/* Style for the amplified chart container (hidden by default) */
+.amplified-chart-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: white;
+  padding: 20px;
+  border: 2px solid #333;
+  width: 1000px; /* Adjust as needed */
+  height: 1000px; /* Adjust as needed */
+}

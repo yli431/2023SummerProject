@@ -159,6 +159,7 @@ TABLES_TO_INCLUDE = [
     "data_import_house",
     "data_import_housevaluegrowth",
     "data_import_mortgagerates",
+    "data_import_meanhousevaluesuburbschch",
 ]
 
 DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(

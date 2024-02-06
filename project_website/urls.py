@@ -23,7 +23,7 @@ from data_import import urls as read_files_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('data_import/', include("data_import.urls")),
+    # path('data_import/', include("data_import.urls")),
     path('mychatbot/', include("mychatbot.urls")),
     path('report_page/', include("report_page.urls")),
     path('summary/', views.summary),
