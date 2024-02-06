@@ -9,7 +9,6 @@ def mychatbot(request: WSGIRequest) -> JsonResponse:
     # print("11111111111111111111")
     # print(question)
 
-
     
     answer = settings.DB_CHAIN_INSTANCE.invoke(input=question, return_only_outputs=True)
     return JsonResponse({"ai_response": answer["result"]})
