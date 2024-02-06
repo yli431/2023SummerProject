@@ -10,4 +10,5 @@ urlpatterns = [
     path('fetch-house-value-growth-data/', views.get_data_for_house_value_growth),
     path('fetch-house-value-nz-data/', views.get_data_for_avg_house_value_nz),
     path('fetch-house-value-change-data/', views.get_data_for_house_value_and_change),
+    path('fetch-mean-house-value-of-chch-suburbs/', views.get_data_for_mean_house_value_of_chch_suburbs),
 ]

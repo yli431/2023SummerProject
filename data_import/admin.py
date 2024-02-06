@@ -7,7 +7,7 @@ from django.contrib import admin
 from django.shortcuts import redirect, render
 from django.urls import path
 
-from .models import AverageHouseValueCHCH, AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MortgageRates
+from .models import AverageHouseValueCHCH, AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
 from django.utils.html import format_html
 
 class AdminPageWithCSVUpload(admin.ModelAdmin):
@@ -192,3 +192,20 @@ class AverageHouseValueCHCHAdmin(AdminPageWithCSVUpload):
                 house_value=row["Property price"],
             )           
     list_display = ("suburb", "month", "year", "house_value")
+
+
+@admin.register(MeanHouseValueSuburbsCHCH)
+class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
+    
+    def create_data(self, data_dict_list):
+        for row in data_dict_list:
+
+            MeanHouseValueSuburbsCHCH.objects.create(
+                suburb=row["suburb"],
+                month=row["month"],
+                year=row["year"],
+                price=row["price"],
+            )    
+       
+    list_display = ("suburb", "month", "year", "price")
+    list_filter = ["suburb"]

@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from django.conf import settings
 from django.template import loader
 from django.http import HttpResponse, JsonResponse
-from data_import.models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MortgageRates
+from data_import.models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
 
 # Create your views here.
 def dashboard_views(request):
@@ -112,3 +111,26 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
         )
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
+def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
+    suburb_items = MeanHouseValueSuburbsCHCH.objects.all()
+    house_value_of_chchsuburbs_dict = {}
+    
+    for suburb_item in suburb_items:
+        if suburb_item.suburb not in house_value_of_chchsuburbs_dict:
+            house_value_of_chchsuburbs_dict[suburb_item.suburb]=[
+                {
+                    "year": suburb_item.year,
+                    "month": suburb_item.month,
+                    "price": suburb_item.price,
+                }
+            ]
+        else:
+            house_value_of_chchsuburbs_dict[suburb_item.suburb].append(
+                {
+                    "year": suburb_item.year,
+                    "month": suburb_item.month,
+                    "price": suburb_item.price,
+                }
+            )
+
+    return JsonResponse({"house_value_of_chchsuburbs_dict": house_value_of_chchsuburbs_dict})

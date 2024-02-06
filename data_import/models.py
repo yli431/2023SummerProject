@@ -85,3 +85,15 @@ class AverageHouseValueCHCH(models.Model):
     
     def __str__(self):
         return str(self.suburb)
+    
+    
+class MeanHouseValueSuburbsCHCH(models.Model):
+    suburb = models.CharField(max_length=100)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    price = models.IntegerField()
+       
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["suburb", "year", "month"], name = "primary_key_of_suburbs_CHCH")
+        ]

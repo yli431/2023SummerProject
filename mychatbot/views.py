@@ -4,11 +4,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from langchain_experimental.sql.base import SQLDatabaseChain
 
 def mychatbot(request: WSGIRequest) -> JsonResponse:
-    question = request.GET["ai_question"]
-    
-    # print("11111111111111111111")
-    # print(question)
-    
+    question = request.GET["ai_question"]    
     answer = settings.DB_CHAIN_INSTANCE.invoke(input=question, return_only_outputs=True)
     return JsonResponse({"ai_response": answer["result"]})
 
