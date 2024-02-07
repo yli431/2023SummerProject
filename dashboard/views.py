@@ -9,12 +9,14 @@ def dashboard_views(request):
     return HttpResponse(template.render())
 
 def get_data_for_mortgage_rates(request) -> JsonResponse:
-    rates = MortgageRates.objects.all()
+    rates = MortgageRates.objects.all().order_by("date")
     mortgage_rates = []
     for rate in rates:
+        if rate.date is None:
+            continue
         mortgage_rates.append(
             {
-                "date": rate.date,
+                "date": rate.date.strftime("%d/%m/%Y"),
                 "three_year_rate": rate.three_year_rate,
                 "four_year_rate": rate.four_year_rate,
                 "five_year_rate": rate.five_year_rate,
@@ -112,23 +114,23 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
 def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
-    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "year", "month")
+    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "date")
     house_value_of_chchsuburbs_dict = {}
     
     for suburb_item in suburb_items:
         if suburb_item.suburb not in house_value_of_chchsuburbs_dict:
             house_value_of_chchsuburbs_dict[suburb_item.suburb]=[
                 {
-                    "year": suburb_item.year,
-                    "month": suburb_item.month,
+                    "year": suburb_item.date.year,  # type: ignore
+                    "month": suburb_item.date.month,  # type: ignore
                     "price": suburb_item.price,
                 }
             ]
         else:
             house_value_of_chchsuburbs_dict[suburb_item.suburb].append(
                 {
-                    "year": suburb_item.year,
-                    "month": suburb_item.month,
+                    "year": suburb_item.date.year,  # type: ignore
+                    "month": suburb_item.date.month,  # type: ignore
                     "price": suburb_item.price,
                 }
             )

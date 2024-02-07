@@ -4,6 +4,7 @@ from django import forms
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path
+import datetime
 
 from .models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
 from django.utils.html import format_html
@@ -128,18 +129,18 @@ class AverageRentalGrowthAdmin(AdminPageWithCSVUpload):
 
 @admin.register(MortgageRates)
 class MortgageRatesAdmin(AdminPageWithCSVUpload):
-    
+
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             MortgageRates.objects.create(
-                date = row['\ufeffDate'],
+                date = datetime.datetime.strptime(row['\ufeffDate'], "%d-%m-%Y").date(),
                 three_year_rate = row['3 year rate'],
                 four_year_rate = row['4 year rate'],
                 five_year_rate = row['5 year rate']
             )            
     list_display = ("date", "three_year_rate", "four_year_rate", "five_year_rate")
-    
-    
+
+
 @admin.register(AverageHouseValueNZ)
 class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
     
@@ -178,16 +179,22 @@ class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
 
 @admin.register(MeanHouseValueSuburbsCHCH)
 class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
+    list_display = ("suburb", "price", "mean_house_value_date")
+    list_filter = ["suburb"]
+    
+    def mean_house_value_date(self, obj: MeanHouseValueSuburbsCHCH):
+        if obj.date is not None:
+            return obj.date.strftime("%Y-%m-%d")
+        return "-"
+    mean_house_value_date.short_description = 'Mean house value date'  # type: ignore
     
     def create_data(self, data_dict_list):
         for row in data_dict_list:
 
             MeanHouseValueSuburbsCHCH.objects.create(
                 suburb=row["suburb"],
-                month=row["month"],
-                year=row["year"],
                 price=row["price"],
+                date=datetime.date(int(row["year"]), int(row["month"]), 1),
             )    
-       
-    list_display = ("suburb", "month", "year", "price")
-    list_filter = ["suburb"]
+
+    
