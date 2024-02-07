@@ -82,13 +82,13 @@ class FamilyIncomeAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             FamilyIncome.objects.create(
-                year = row['Year'],
+                date = datetime.date(int(row['Year']), 12, 31),
                 family_income = row['Income'].replace(",", ''),
                 change_compared_to_lastyear = row['Change'].replace("%", ""),
                 region = row["Region"],
-            )            
+            )
 
-    list_display = ("year", "display_family_income", "display_change", "region")
+    list_display = ("date", "display_family_income", "display_change", "region")
     
     def display_family_income(self, obj: FamilyIncome):
         return f"{obj.family_income}"
@@ -105,12 +105,12 @@ class HouseValueGrowthAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             HouseValueGrowth.objects.create(
-                year = row['\ufeffYear'],
+                date = datetime.date(int(row['\ufeffYear']), 12, 31),
                 akl_house_value_growth = row['Auckland'],
                 nz_house_value_growth = row['New Zealand'],
-            )            
+            )           
 
-    list_display = ("year", "akl_house_value_growth", "nz_house_value_growth")
+    list_display = ("date", "akl_house_value_growth", "nz_house_value_growth")
 
 
 @admin.register(AverageRentalGrowth)
@@ -119,12 +119,12 @@ class AverageRentalGrowthAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             AverageRentalGrowth.objects.create(
-                year = row['\ufeffYear'],
+                date = datetime.date(int(row['\ufeffYear']), 12, 31),
                 akl_avg_rental_growth = row['Auckland'],
                 nz_avg_rental_growth = row['New Zealand'],
             )            
 
-    list_display = ("year", "akl_avg_rental_growth", "nz_avg_rental_growth")
+    list_display = ("date", "akl_avg_rental_growth", "nz_avg_rental_growth")
 
 
 @admin.register(MortgageRates)

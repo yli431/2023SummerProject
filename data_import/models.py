@@ -13,31 +13,31 @@ class House(models.Model):
 
 
 class FamilyIncome(models.Model):
-    year = models.IntegerField()
     family_income = models.DecimalField(max_digits=50, decimal_places=2)
     change_compared_to_lastyear = models.DecimalField(max_digits=10, decimal_places=2)
     region = models.CharField(max_length=50, default="Other")
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
 
 
 class HouseValueGrowth(models.Model):
-    year = models.IntegerField()
     akl_house_value_growth = models.DecimalField(max_digits=50, decimal_places=3)
     nz_house_value_growth = models.DecimalField(max_digits=50, decimal_places=3)
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
     
 
 class AverageRentalGrowth(models.Model):
-    year = models.IntegerField()
     akl_avg_rental_growth = models.DecimalField(max_digits=50, decimal_places=3)
     nz_avg_rental_growth = models.DecimalField(max_digits=50, decimal_places=3)
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
     
     
 class MortgageRates(models.Model):
