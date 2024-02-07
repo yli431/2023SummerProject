@@ -2,6 +2,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from langchain_experimental.sql.base import SQLDatabaseChain
+import openai
 import sqlalchemy.exc
 
 
@@ -12,6 +13,9 @@ def mychatbot(request: WSGIRequest) -> JsonResponse:
     except sqlalchemy.exc.ProgrammingError as error:
         print(error)
         return JsonResponse({"ai_response": "[ERROR] The question can not be parsed by the system, please reorganize the question..."})
+    except openai.BadRequestError as error:
+        print(error)
+        return JsonResponse({"ai_response": "[ERROR] The answer of the question may be over limitation, please ask another one..."})
 
     return JsonResponse({"ai_response": answer["result"]})
 

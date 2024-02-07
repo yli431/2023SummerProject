@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import path
 import datetime
 
-from .models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
+from .models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, ChristchurchSuburbMeanPropertyPrice, MortgageRates
 from django.utils.html import format_html
 
 class AdminPageWithCSVUpload(admin.ModelAdmin):
@@ -177,12 +177,13 @@ class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
                     "year_2022", "year_2023")
 
 
-@admin.register(MeanHouseValueSuburbsCHCH)
+@admin.register(ChristchurchSuburbMeanPropertyPrice)
 class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
     list_display = ("suburb", "price", "mean_house_value_date")
     list_filter = ["suburb"]
+    search_fields = ["date"]
     
-    def mean_house_value_date(self, obj: MeanHouseValueSuburbsCHCH):
+    def mean_house_value_date(self, obj: ChristchurchSuburbMeanPropertyPrice):
         if obj.date is not None:
             return obj.date.strftime("%Y-%m-%d")
         return "-"
@@ -190,8 +191,7 @@ class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
     
     def create_data(self, data_dict_list):
         for row in data_dict_list:
-
-            MeanHouseValueSuburbsCHCH.objects.create(
+            ChristchurchSuburbMeanPropertyPrice.objects.create(
                 suburb=row["suburb"],
                 price=row["price"],
                 date=datetime.date(int(row["year"]), int(row["month"]), 1),

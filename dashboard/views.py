@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.template import loader
 from django.http import HttpResponse, JsonResponse
-from data_import.models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
+from data_import.models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, ChristchurchSuburbMeanPropertyPrice, MortgageRates
 
 # Create your views here.
 def dashboard_views(request):
@@ -120,7 +120,7 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
 def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
-    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "date")
+    suburb_items = ChristchurchSuburbMeanPropertyPrice.objects.all().order_by("suburb", "date")
     house_value_of_chchsuburbs_dict = {}
     
     for suburb_item in suburb_items:
