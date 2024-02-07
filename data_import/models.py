@@ -78,7 +78,7 @@ class AverageHouseValueNZ(models.Model):
         return str(self.name)
     
     
-class MeanHouseValueSuburbsCHCH(models.Model):
+class ChristchurchSuburbMeanPropertyPrice(models.Model):
     suburb = models.CharField(max_length=100)
     price = models.IntegerField()
     date = models.DateField(blank=True, null=True)
