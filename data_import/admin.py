@@ -65,15 +65,15 @@ class HouseAdmin(AdminPageWithCSVUpload):
     
     def display_values(self, obj: House) -> str:
         return format_html("{}", obj.values)
-    display_values.short_description = 'Values($)'
+    display_values.short_description = 'Values($)'  # type: ignore
     
     def display_twelve_month_change(self, obj: House) -> str:
         return f"{obj.twelve_month_change}"
-    display_twelve_month_change.short_description = "Twelve Month Change(%)" 
+    display_twelve_month_change.short_description = "Twelve Month Change(%)"  # type: ignore
 
     def display_three_month_change(self, obj: House) -> str:
         return f"{obj.three_month_change}"
-    display_three_month_change.short_description = "Three Month Change(%)" 
+    display_three_month_change.short_description = "Three Month Change(%)"  # type: ignore
     
 
 # Register your models here.
@@ -93,11 +93,11 @@ class FamilyIncomeAdmin(AdminPageWithCSVUpload):
     
     def display_family_income(self, obj: FamilyIncome):
         return f"{obj.family_income}"
-    display_family_income.short_description = "family_income($)"
+    display_family_income.short_description = "family_income($)"  # type: ignore
 
     def display_change(self, obj: FamilyIncome):
         return f"{obj.change_compared_to_lastyear}"
-    display_change.short_description = "change_compared_to_lastyear(%)"
+    display_change.short_description = "change_compared_to_lastyear(%)"  # type: ignore
 
 
 @admin.register(HouseValueGrowth)

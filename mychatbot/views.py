@@ -5,7 +5,7 @@ from langchain_experimental.sql.base import SQLDatabaseChain
 
 def mychatbot(request: WSGIRequest) -> JsonResponse:
     question = request.GET["ai_question"]    
-    answer = settings.DB_CHAIN_INSTANCE.invoke(input=question, return_only_outputs=True)
+    answer = settings.DB_CHAIN_INSTANCE.invoke(input={"query": question}, return_only_outputs=True)
     return JsonResponse({"ai_response": answer["result"]})
 
 def chat_history(request):
