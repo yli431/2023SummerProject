@@ -11,36 +11,37 @@ class House(models.Model):
     def __str__(self):
         return self.areas
 
+
 class FamilyIncome(models.Model):
-    year = models.IntegerField()
     family_income = models.DecimalField(max_digits=50, decimal_places=2)
     change_compared_to_lastyear = models.DecimalField(max_digits=10, decimal_places=2)
     region = models.CharField(max_length=50, default="Other")
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
 
 
 class HouseValueGrowth(models.Model):
-    year = models.IntegerField()
     akl_house_value_growth = models.DecimalField(max_digits=50, decimal_places=3)
     nz_house_value_growth = models.DecimalField(max_digits=50, decimal_places=3)
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
     
 
 class AverageRentalGrowth(models.Model):
-    year = models.IntegerField()
     akl_avg_rental_growth = models.DecimalField(max_digits=50, decimal_places=3)
     nz_avg_rental_growth = models.DecimalField(max_digits=50, decimal_places=3)
+    date = models.DateField(null=True)
     
     def __str__(self):
-        return str(self.year)
+        return str(self.date)
     
     
 class MortgageRates(models.Model):
-    date = models.CharField(max_length=100)
+    date = models.DateField(blank=True, null=True)
     three_year_rate = models.DecimalField(max_digits=50, decimal_places=2)
     four_year_rate = models.DecimalField(max_digits=50, decimal_places=2)
     five_year_rate = models.DecimalField(max_digits=50, decimal_places=2)
@@ -75,25 +76,14 @@ class AverageHouseValueNZ(models.Model):
     
     def __str__(self):
         return str(self.name)
-
-
-class AverageHouseValueCHCH(models.Model):
-    suburb = models.CharField(max_length=100)
-    month = models.IntegerField()
-    year = models.IntegerField()
-    house_value = models.IntegerField()
-    
-    def __str__(self):
-        return str(self.suburb)
     
     
 class MeanHouseValueSuburbsCHCH(models.Model):
     suburb = models.CharField(max_length=100)
-    year = models.IntegerField()
-    month = models.IntegerField()
     price = models.IntegerField()
-       
+    date = models.DateField(blank=True, null=True)
+
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["suburb", "year", "month"], name = "primary_key_of_suburbs_CHCH")
+            models.UniqueConstraint(fields=["suburb", "date"], name = "primary_key_of_suburbs_CHCH")
         ]

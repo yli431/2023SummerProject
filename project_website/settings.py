@@ -151,7 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 TABLES_TO_INCLUDE = [
-    "data_import_averagehousevaluechch",
     "data_import_averagehousevaluenz",
     "data_import_averagerentalgrowth",
     "data_import_familyincome", 
@@ -161,7 +160,7 @@ TABLES_TO_INCLUDE = [
     "data_import_meanhousevaluesuburbschch",
 ]
 
-DB_CHAIN_INSTANCE = SQLDatabaseChain.from_llm(
+DB_CHAIN_INSTANCE: SQLDatabaseChain = SQLDatabaseChain.from_llm(
     llm=OpenAI(temperature=0, api_key=OPENAI_API_KEY, max_tokens=-1, verbose=True), 
     db=SQLDatabase(
         engine=create_engine(

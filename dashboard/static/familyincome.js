@@ -11,6 +11,7 @@ fetch(dataUrl, {
       const ctx = document.getElementById('family_income');
       let family_income_akl = []
       let family_income_excl_akl = []
+
       for (let i=0; i<data.family_income.length; i++) {
 
           if (data.family_income[i]["region"] === "Auckland") {

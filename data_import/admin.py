@@ -1,13 +1,12 @@
 import csv
-from io import TextIOWrapper
 import io
 from django import forms
-from datetime import datetime
 from django.contrib import admin
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.urls import path
+import datetime
 
-from .models import AverageHouseValueCHCH, AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
+from .models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
 from django.utils.html import format_html
 
 class AdminPageWithCSVUpload(admin.ModelAdmin):
@@ -83,13 +82,13 @@ class FamilyIncomeAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             FamilyIncome.objects.create(
-                year = row['Year'],
+                date = datetime.date(int(row['Year']), 12, 31),
                 family_income = row['Income'].replace(",", ''),
                 change_compared_to_lastyear = row['Change'].replace("%", ""),
                 region = row["Region"],
-            )            
+            )
 
-    list_display = ("year", "display_family_income", "display_change", "region")
+    list_display = ("date", "display_family_income", "display_change", "region")
     
     def display_family_income(self, obj: FamilyIncome):
         return f"{obj.family_income}"
@@ -106,12 +105,12 @@ class HouseValueGrowthAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             HouseValueGrowth.objects.create(
-                year = row['\ufeffYear'],
+                date = datetime.date(int(row['\ufeffYear']), 12, 31),
                 akl_house_value_growth = row['Auckland'],
                 nz_house_value_growth = row['New Zealand'],
-            )            
+            )           
 
-    list_display = ("year", "akl_house_value_growth", "nz_house_value_growth")
+    list_display = ("date", "akl_house_value_growth", "nz_house_value_growth")
 
 
 @admin.register(AverageRentalGrowth)
@@ -120,28 +119,28 @@ class AverageRentalGrowthAdmin(AdminPageWithCSVUpload):
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             AverageRentalGrowth.objects.create(
-                year = row['\ufeffYear'],
+                date = datetime.date(int(row['\ufeffYear']), 12, 31),
                 akl_avg_rental_growth = row['Auckland'],
                 nz_avg_rental_growth = row['New Zealand'],
             )            
 
-    list_display = ("year", "akl_avg_rental_growth", "nz_avg_rental_growth")
+    list_display = ("date", "akl_avg_rental_growth", "nz_avg_rental_growth")
 
 
 @admin.register(MortgageRates)
 class MortgageRatesAdmin(AdminPageWithCSVUpload):
-    
+
     def create_data(self, data_dict_list):
         for row in data_dict_list:
             MortgageRates.objects.create(
-                date = row['\ufeffDate'],
+                date = datetime.datetime.strptime(row['\ufeffDate'], "%d-%m-%Y").date(),
                 three_year_rate = row['3 year rate'],
                 four_year_rate = row['4 year rate'],
                 five_year_rate = row['5 year rate']
             )            
     list_display = ("date", "three_year_rate", "four_year_rate", "five_year_rate")
-    
-    
+
+
 @admin.register(AverageHouseValueNZ)
 class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
     
@@ -178,34 +177,24 @@ class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
                     "year_2022", "year_2023")
 
 
-@admin.register(AverageHouseValueCHCH)
-class AverageHouseValueCHCHAdmin(AdminPageWithCSVUpload):
-    
-    def create_data(self, data_dict_list):
-        for row in data_dict_list:
-            date_object = datetime.strptime(row["Value date"], "%d/%m/%Y")
-
-            AverageHouseValueCHCH.objects.create(
-                suburb=row["\ufeffSuburb name"],
-                month=date_object.month,
-                year=date_object.year,
-                house_value=row["Property price"],
-            )           
-    list_display = ("suburb", "month", "year", "house_value")
-
-
 @admin.register(MeanHouseValueSuburbsCHCH)
 class MeanHouseValueSuburbsCHCHAdmin(AdminPageWithCSVUpload):
+    list_display = ("suburb", "price", "mean_house_value_date")
+    list_filter = ["suburb"]
+    
+    def mean_house_value_date(self, obj: MeanHouseValueSuburbsCHCH):
+        if obj.date is not None:
+            return obj.date.strftime("%Y-%m-%d")
+        return "-"
+    mean_house_value_date.short_description = 'Mean house value date'  # type: ignore
     
     def create_data(self, data_dict_list):
         for row in data_dict_list:
 
             MeanHouseValueSuburbsCHCH.objects.create(
                 suburb=row["suburb"],
-                month=row["month"],
-                year=row["year"],
                 price=row["price"],
+                date=datetime.date(int(row["year"]), int(row["month"]), 1),
             )    
-       
-    list_display = ("suburb", "month", "year", "price")
-    list_filter = ["suburb"]
+
+    

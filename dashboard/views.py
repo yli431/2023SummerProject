@@ -9,12 +9,14 @@ def dashboard_views(request):
     return HttpResponse(template.render())
 
 def get_data_for_mortgage_rates(request) -> JsonResponse:
-    rates = MortgageRates.objects.all()
+    rates = MortgageRates.objects.all().order_by("date")
     mortgage_rates = []
     for rate in rates:
+        if rate.date is None:
+            continue
         mortgage_rates.append(
             {
-                "date": rate.date,
+                "date": rate.date.strftime("%d/%m/%Y"),
                 "three_year_rate": rate.three_year_rate,
                 "four_year_rate": rate.four_year_rate,
                 "five_year_rate": rate.five_year_rate,
@@ -24,13 +26,15 @@ def get_data_for_mortgage_rates(request) -> JsonResponse:
 
 
 def get_data_for_family_income(request) -> JsonResponse:
-    family_income_items = FamilyIncome.objects.all()
+    family_income_items = FamilyIncome.objects.all().order_by("region", "date__year")
     family_income = []
 
     for family_income_item in family_income_items:
+        if family_income_item.date is None:
+            continue
         family_income.append(
             {
-                "year": family_income_item.year,
+                "year": family_income_item.date.year,
                 "family_income": family_income_item.family_income,
                 # "change_compared_to_lastyear": family_income_item.change_compared_to_lastyear,
                 "region": family_income_item.region,
@@ -39,12 +43,14 @@ def get_data_for_family_income(request) -> JsonResponse:
     return JsonResponse({"family_income": family_income})
 
 def get_data_for_rental_growth(request) -> JsonResponse:
-    rental_growth_items = AverageRentalGrowth.objects.all()
+    rental_growth_items = AverageRentalGrowth.objects.all().order_by("date")
     rental_growth = []
     for rental_growth_item in rental_growth_items:
+        if rental_growth_item.date is None:
+            continue
         rental_growth.append( 
             {
-                "year": rental_growth_item.year,
+                "year": rental_growth_item.date.year,
                 "akl_avg_rental_growth": rental_growth_item.akl_avg_rental_growth,
                 "nz_avg_rental_growth": rental_growth_item.nz_avg_rental_growth,
             }
@@ -52,12 +58,14 @@ def get_data_for_rental_growth(request) -> JsonResponse:
     return JsonResponse({"rental_growth": rental_growth})
 
 def get_data_for_house_value_growth(request) -> JsonResponse:
-    house_value_growth_items = HouseValueGrowth.objects.all()
+    house_value_growth_items = HouseValueGrowth.objects.all().order_by("date")
     house_value_growth = []
     for house_value_growth_item in house_value_growth_items:
+        if house_value_growth_item.date is None:
+            continue
         house_value_growth.append( 
             {
-                "year": house_value_growth_item.year,
+                "year": house_value_growth_item.date.year,
                 "akl_house_value_growth": house_value_growth_item.akl_house_value_growth,
                 "nz_house_value_growth": house_value_growth_item.nz_house_value_growth,
             }
@@ -112,23 +120,23 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
 def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
-    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "year", "month")
+    suburb_items = MeanHouseValueSuburbsCHCH.objects.all().order_by("suburb", "date")
     house_value_of_chchsuburbs_dict = {}
     
     for suburb_item in suburb_items:
         if suburb_item.suburb not in house_value_of_chchsuburbs_dict:
             house_value_of_chchsuburbs_dict[suburb_item.suburb]=[
                 {
-                    "year": suburb_item.year,
-                    "month": suburb_item.month,
+                    "year": suburb_item.date.year,  # type: ignore
+                    "month": suburb_item.date.month,  # type: ignore
                     "price": suburb_item.price,
                 }
             ]
         else:
             house_value_of_chchsuburbs_dict[suburb_item.suburb].append(
                 {
-                    "year": suburb_item.year,
-                    "month": suburb_item.month,
+                    "year": suburb_item.date.year,  # type: ignore
+                    "month": suburb_item.date.month,  # type: ignore
                     "price": suburb_item.price,
                 }
             )
