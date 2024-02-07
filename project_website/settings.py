@@ -151,7 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 TABLES_TO_INCLUDE = [
-    "data_import_averagehousevaluechch",
     "data_import_averagehousevaluenz",
     "data_import_averagerentalgrowth",
     "data_import_familyincome", 

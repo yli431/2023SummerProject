@@ -75,16 +75,6 @@ class AverageHouseValueNZ(models.Model):
     
     def __str__(self):
         return str(self.name)
-
-
-class AverageHouseValueCHCH(models.Model):
-    suburb = models.CharField(max_length=100)
-    month = models.IntegerField()
-    year = models.IntegerField()
-    house_value = models.IntegerField()
-    
-    def __str__(self):
-        return str(self.suburb)
     
     
 class MeanHouseValueSuburbsCHCH(models.Model):

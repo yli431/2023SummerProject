@@ -2,11 +2,18 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.core.handlers.wsgi import WSGIRequest
 from langchain_experimental.sql.base import SQLDatabaseChain
+import sqlalchemy.exc
+
 
 def mychatbot(request: WSGIRequest) -> JsonResponse:
     question = request.GET["ai_question"]    
-    answer = settings.DB_CHAIN_INSTANCE.invoke(input={"query": question}, return_only_outputs=True)
+    try:
+        answer = settings.DB_CHAIN_INSTANCE.invoke(input={"query": question}, return_only_outputs=False)
+    except sqlalchemy.exc.ProgrammingError as error:
+        return JsonResponse({"ai_response": "[ERROR] The question can not be parsed by the system, please reorganize the question..."})
+
     return JsonResponse({"ai_response": answer["result"]})
+
 
 def chat_history(request):
     db_chain: SQLDatabaseChain = settings.DB_CHAIN_INSTANCE

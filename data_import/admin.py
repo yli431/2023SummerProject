@@ -1,13 +1,11 @@
 import csv
-from io import TextIOWrapper
 import io
 from django import forms
-from datetime import datetime
 from django.contrib import admin
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.urls import path
 
-from .models import AverageHouseValueCHCH, AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
+from .models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, MeanHouseValueSuburbsCHCH, MortgageRates
 from django.utils.html import format_html
 
 class AdminPageWithCSVUpload(admin.ModelAdmin):
@@ -176,22 +174,6 @@ class AverageHouseValueNZAdmin(AdminPageWithCSVUpload):
                     "year_2012", "year_2013", "year_2014", "year_2015", "year_2016", 
                     "year_2017", "year_2018", "year_2019", "year_2020", "year_2021", 
                     "year_2022", "year_2023")
-
-
-@admin.register(AverageHouseValueCHCH)
-class AverageHouseValueCHCHAdmin(AdminPageWithCSVUpload):
-    
-    def create_data(self, data_dict_list):
-        for row in data_dict_list:
-            date_object = datetime.strptime(row["Value date"], "%d/%m/%Y")
-
-            AverageHouseValueCHCH.objects.create(
-                suburb=row["\ufeffSuburb name"],
-                month=date_object.month,
-                year=date_object.year,
-                house_value=row["Property price"],
-            )           
-    list_display = ("suburb", "month", "year", "house_value")
 
 
 @admin.register(MeanHouseValueSuburbsCHCH)
