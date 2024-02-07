@@ -93,6 +93,52 @@ fetch(checkHistoryUrl, {
       </div>
     `
 
+    let preloaderCircle = `
+      <div class="chatbox-message-item" id="message_preloader">
+        <div class="preloader-wrapper small active">
+          <div class="spinner-layer spinner-blue">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+
+          <div class="spinner-layer spinner-red">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+
+          <div class="spinner-layer spinner-yellow">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+
+          <div class="spinner-layer spinner-green">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+
     const textarea_value_backup = textarea.value.trim().replace(/\n/g, '<br>\n')
     chatboxMessageWrapper.insertAdjacentHTML('beforeend', message)
     textarea.value = ''
@@ -105,11 +151,17 @@ fetch(checkHistoryUrl, {
     const internalUrl = '/mychatbot/mychatbot/';
     const url = `${internalUrl}?ai_question=${textarea_value_backup}`;
 
+
+    chatboxMessageWrapper.insertAdjacentHTML('beforeend', preloaderCircle)
+    scrollBottom()
+
     fetch(url, {
         method: 'GET',
         headers: {
         },
     }).then(response => {
+        var preloader = document.getElementById("message_preloader");
+        preloader.parentNode.removeChild(preloader);
         response.json().then(data => {
           autoReply(data.ai_response);
         })
