@@ -1,16 +1,17 @@
-from django.conf import settings
+from typing import Any, Dict, List
 from django.template import loader
 from django.http import HttpResponse, JsonResponse
+from django.core.handlers.wsgi import WSGIRequest
 from data_import.models import AverageHouseValueNZ, AverageRentalGrowth, FamilyIncome, House, HouseValueGrowth, ChristchurchSuburbMeanPropertyPrice, MortgageRates
 
 # Create your views here.
-def dashboard_views(request):
+def dashboard_views(request: WSGIRequest) -> HttpResponse:
     template = loader.get_template('dashboard.html')
     return HttpResponse(template.render())
 
-def get_data_for_mortgage_rates(request) -> JsonResponse:
+def get_data_for_mortgage_rates(request: WSGIRequest) -> JsonResponse:
     rates = MortgageRates.objects.all().order_by("date")
-    mortgage_rates = []
+    mortgage_rates: List[Dict[str, Any]] = []
     for rate in rates:
         if rate.date is None:
             continue
@@ -25,9 +26,9 @@ def get_data_for_mortgage_rates(request) -> JsonResponse:
     return JsonResponse({"mortgage_rates": mortgage_rates})
 
 
-def get_data_for_family_income(request) -> JsonResponse:
+def get_data_for_family_income(request: WSGIRequest) -> JsonResponse:
     family_income_items = FamilyIncome.objects.all().order_by("region", "date__year")
-    family_income = []
+    family_income: List[Dict[str, Any]] = []
 
     for family_income_item in family_income_items:
         if family_income_item.date is None:
@@ -36,15 +37,14 @@ def get_data_for_family_income(request) -> JsonResponse:
             {
                 "year": family_income_item.date.year,
                 "family_income": family_income_item.family_income,
-                # "change_compared_to_lastyear": family_income_item.change_compared_to_lastyear,
                 "region": family_income_item.region,
             }
         )    
     return JsonResponse({"family_income": family_income})
 
-def get_data_for_rental_growth(request) -> JsonResponse:
+def get_data_for_rental_growth(request: WSGIRequest) -> JsonResponse:
     rental_growth_items = AverageRentalGrowth.objects.all().order_by("date")
-    rental_growth = []
+    rental_growth: List[Dict[str, Any]] = []
     for rental_growth_item in rental_growth_items:
         if rental_growth_item.date is None:
             continue
@@ -57,9 +57,9 @@ def get_data_for_rental_growth(request) -> JsonResponse:
         )
     return JsonResponse({"rental_growth": rental_growth})
 
-def get_data_for_house_value_growth(request) -> JsonResponse:
+def get_data_for_house_value_growth(request: WSGIRequest) -> JsonResponse:
     house_value_growth_items = HouseValueGrowth.objects.all().order_by("date")
-    house_value_growth = []
+    house_value_growth: List[Dict[str, Any]] = []
     for house_value_growth_item in house_value_growth_items:
         if house_value_growth_item.date is None:
             continue
@@ -72,9 +72,9 @@ def get_data_for_house_value_growth(request) -> JsonResponse:
         )
     return JsonResponse({"house_value_growth": house_value_growth})
 
-def get_data_for_avg_house_value_nz(request):
+def get_data_for_avg_house_value_nz(request: WSGIRequest) -> JsonResponse:
     house_value_nz_items = AverageHouseValueNZ.objects.all()
-    house_value_nz = []
+    house_value_nz: List[Dict[str, Any]] = []
     for house_value_item in house_value_nz_items:
         house_value_nz.append(
             {
@@ -105,9 +105,9 @@ def get_data_for_avg_house_value_nz(request):
     return JsonResponse({"house_value_nz": house_value_nz})
 
     
-def get_data_for_house_value_and_change(request) -> JsonResponse:
+def get_data_for_house_value_and_change(request: WSGIRequest) -> JsonResponse:
     house_items = House.objects.all()
-    house_value_and_change = []
+    house_value_and_change: List[Dict[str, Any]] = []
     for house_item in house_items:
         house_value_and_change.append( 
             {
@@ -119,9 +119,9 @@ def get_data_for_house_value_and_change(request) -> JsonResponse:
         )
     return JsonResponse({"house_value_and_change": house_value_and_change})
 
-def get_data_for_mean_house_value_of_chch_suburbs(request) -> JsonResponse:
+def get_data_for_mean_house_value_of_chch_suburbs(request: WSGIRequest) -> JsonResponse:
     suburb_items = ChristchurchSuburbMeanPropertyPrice.objects.all().order_by("suburb", "date")
-    house_value_of_chchsuburbs_dict = {}
+    house_value_of_chchsuburbs_dict: Dict[str, list] = {}
     
     for suburb_item in suburb_items:
         if suburb_item.suburb not in house_value_of_chchsuburbs_dict:

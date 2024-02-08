@@ -20,9 +20,9 @@ def mychatbot(request: WSGIRequest) -> JsonResponse:
     return JsonResponse({"ai_response": answer["result"]})
 
 
-def chat_history(request):
+def chat_history(request: WSGIRequest) -> JsonResponse:
     db_chain: SQLDatabaseChain = settings.DB_CHAIN_INSTANCE
-    history_chat = db_chain.memory.dict()
+    history_chat = db_chain.memory.dict()  # type: ignore
     
     contents = history_chat["chat_memory"]["messages"]
     response_list = []
